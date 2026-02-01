@@ -49,18 +49,18 @@ def main():
     
     print("\n[ Concert Pitch ]")
     concert_suggestions = helper.suggest_scales(key)
-    for name, scale in concert_suggestions.items():
-        print(f"  - {name}: {scale}")
+    for name, data in concert_suggestions.items():
+        print(f"  - {data['label']}: {data['notes']}")
         
     print("\n[ Tenor Saxophone (Bb) ]")
     tenor_suggestions = helper.get_instrument_suggestions(key, 'Bb')
-    for name, scale in tenor_suggestions.items():
-        print(f"  - {name}: {scale}")
+    for name, data in tenor_suggestions.items():
+        print(f"  - {data['label']}: {data['notes']}")
         
     print("\n[ Alto Saxophone (Eb) ]")
     alto_suggestions = helper.get_instrument_suggestions(key, 'Eb')
-    for name, scale in alto_suggestions.items():
-        print(f"  - {name}: {scale}")
+    for name, data in alto_suggestions.items():
+        print(f"  - {data['label']}: {data['notes']}")
 
     # Cleanup temporary spotify download
     if is_spotify and audio_path.startswith('downloads/'):

@@ -103,17 +103,17 @@ document.addEventListener('DOMContentLoaded', () => {
         // Scales
         scalesGrid.innerHTML = '';
         const suggestions = data.suggestions;
-        for (const [name, scale] of Object.entries(suggestions)) {
+        for (const [type, data] of Object.entries(suggestions)) {
             const card = document.createElement('div');
             card.className = 'scale-card';
 
             const nameEl = document.createElement('div');
             nameEl.className = 'scale-name';
-            nameEl.textContent = name;
+            nameEl.textContent = `${type}: ${data.label}`;
 
             const valueEl = document.createElement('div');
             valueEl.className = 'scale-notes';
-            valueEl.textContent = scale;
+            valueEl.textContent = data.notes;
 
             card.appendChild(nameEl);
             card.appendChild(valueEl);

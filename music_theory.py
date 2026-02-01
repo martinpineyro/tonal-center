@@ -20,9 +20,42 @@ class MusicTheoryHelper:
             mode = parts[1].lower()
         return music21.key.Key(tonic, mode)
 
+    def _get_scale_notes(self, tonic_name, scale_type):
+        """
+        Returns a string of notes for the given tonic and scale type.
+        """
+        try:
+            t = music21.pitch.Pitch(tonic_name)
+            if scale_type == 'major':
+                s = music21.scale.MajorScale(t)
+                pitches = s.getPitches(t)
+            elif scale_type == 'minor':
+                s = music21.scale.MinorScale(t)
+                pitches = s.getPitches(t)
+            elif scale_type == 'major pentatonic':
+                # Manually handle pentatonic as music21 doesn't have a direct simple class for all types
+                intervals = ['P1', 'M2', 'M3', 'P5', 'M6']
+                pitches = [t.transpose(i) for i in intervals]
+            elif scale_type == 'minor pentatonic':
+                intervals = ['P1', 'm3', 'P4', 'P5', 'm7']
+                pitches = [t.transpose(i) for i in intervals]
+            elif scale_type == 'major blues':
+                intervals = ['P1', 'M2', 'm3', 'M3', 'P5', 'M6']
+                pitches = [t.transpose(i) for i in intervals]
+            elif scale_type == 'minor blues':
+                intervals = ['P1', 'm3', 'P4', 'A4', 'P5', 'm7']
+                pitches = [t.transpose(i) for i in intervals]
+            else:
+                return ""
+            
+            return " ".join([p.name.replace('-', 'b') for p in pitches])
+        except:
+            return ""
+
     def suggest_scales(self, concert_key_str):
         """
         Suggests scales based on the detected key string (e.g., 'C major').
+        Returns a dict: { type: { label: str, notes: str } }
         """
         k = self._get_key_obj(concert_key_str)
         tonic_name = k.tonic.name
@@ -30,15 +63,39 @@ class MusicTheoryHelper:
         
         suggestions = {}
         if is_major:
-            suggestions['Main Scale'] = f"{tonic_name} Major"
-            suggestions['Pentatonic'] = f"{tonic_name} Major Pentatonic"
-            suggestions['Blues'] = f"{tonic_name} Major Blues"
-            suggestions['Relative Minor'] = f"{k.relative.tonic.name} Minor"
+            suggestions['Main Scale'] = {
+                'label': f"{tonic_name} Major",
+                'notes': self._get_scale_notes(tonic_name, 'major')
+            }
+            suggestions['Pentatonic'] = {
+                'label': f"{tonic_name} Major Pentatonic",
+                'notes': self._get_scale_notes(tonic_name, 'major pentatonic')
+            }
+            suggestions['Blues'] = {
+                'label': f"{tonic_name} Major Blues",
+                'notes': self._get_scale_notes(tonic_name, 'major blues')
+            }
+            suggestions['Relative Minor'] = {
+                'label': f"{k.relative.tonic.name} Minor",
+                'notes': self._get_scale_notes(k.relative.tonic.name, 'minor')
+            }
         else:
-            suggestions['Main Scale'] = f"{tonic_name} Minor"
-            suggestions['Pentatonic'] = f"{tonic_name} Minor Pentatonic"
-            suggestions['Blues'] = f"{tonic_name} Minor Blues"
-            suggestions['Relative Major'] = f"{k.relative.tonic.name} Major"
+            suggestions['Main Scale'] = {
+                'label': f"{tonic_name} Minor",
+                'notes': self._get_scale_notes(tonic_name, 'minor')
+            }
+            suggestions['Pentatonic'] = {
+                'label': f"{tonic_name} Minor Pentatonic",
+                'notes': self._get_scale_notes(tonic_name, 'minor pentatonic')
+            }
+            suggestions['Blues'] = {
+                'label': f"{tonic_name} Minor Blues",
+                'notes': self._get_scale_notes(tonic_name, 'minor blues')
+            }
+            suggestions['Relative Major'] = {
+                'label': f"{k.relative.tonic.name} Major",
+                'notes': self._get_scale_notes(k.relative.tonic.name, 'major')
+            }
             
         return suggestions
 
