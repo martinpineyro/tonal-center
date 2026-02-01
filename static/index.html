@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,8 +8,11 @@
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@400;600;800&display=swap"
+        rel="stylesheet">
 </head>
+
 <body class="dark-theme">
     <div class="background-blobs">
         <div class="blob blob-1"></div>
@@ -28,10 +32,11 @@
         <main>
             <section class="input-section glass">
                 <div class="search-container">
-                    <input type="text" id="song-input" placeholder="Enter song name or Spotify track URL..." autocomplete="off">
+                    <input type="text" id="song-input" placeholder="Enter song name or Spotify track URL..."
+                        autocomplete="off">
                     <button id="analyze-btn">Analyze</button>
                 </div>
-                
+
                 <div class="controls">
                     <label for="instrument-select">Transposition:</label>
                     <div class="instrument-grid" id="instrument-grid">
@@ -68,6 +73,25 @@
                         <!-- Scale cards will go here -->
                     </div>
                 </div>
+
+                <div class="visualization-section glass fade-in delay-4">
+                    <h3>Circle of Fifths Analysis</h3>
+                    <div class="circle-container">
+                        <svg id="circle-of-fifths" viewBox="0 0 400 400">
+                            <!-- Background Circles -->
+                            <circle cx="200" cy="200" r="180" class="outer-circle" />
+                            <circle cx="200" cy="200" r="120" class="inner-circle" />
+
+                            <!-- Groups will be injected by JS -->
+                            <g id="circle-notes"></g>
+                            <g id="circle-connections"></g>
+                        </svg>
+                        <div class="circle-legend">
+                            <div class="legend-item"><span class="dot tonal-center"></span> Tonal Center</div>
+                            <div class="legend-item"><span class="dot in-progression"></span> In Progression</div>
+                        </div>
+                    </div>
+                </div>
             </section>
 
             <div id="loading" class="loading-overlay hidden">
@@ -83,4 +107,5 @@
 
     <script src="app.js"></script>
 </body>
+
 </html>

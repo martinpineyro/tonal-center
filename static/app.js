@@ -63,6 +63,88 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    const drawCircleOfFifths = (tonalCenter, progression) => {
+        const notesGroup = document.getElementById('circle-notes');
+        const connectionsGroup = document.getElementById('circle-connections');
+        notesGroup.innerHTML = '';
+        connectionsGroup.innerHTML = '';
+
+        // Circle of Fifths order
+        const circleNotes = ['C', 'G', 'D', 'A', 'E', 'B', 'Gb', 'Db', 'Ab', 'Eb', 'Bb', 'F'];
+        const centerX = 200;
+        const centerY = 200;
+        const radius = 150;
+
+        // Map notes from progression/tonal center to variants used in circle
+        const normalizeNote = (n) => {
+            if (!n) return '';
+            let root = n.split(' ')[0].toUpperCase();
+            // Map common synonyms
+            const mappings = {
+                'C#': 'Db',
+                'F#': 'Gb',
+                'G#': 'Ab',
+                'D#': 'Eb',
+                'A#': 'Bb'
+            };
+            return mappings[root] || root;
+        };
+
+        const targetTonalCenter = normalizeNote(tonalCenter);
+        const uniqueProgression = [...new Set(progression.map(normalizeNote))];
+
+        const notePositions = [];
+
+        circleNotes.forEach((note, i) => {
+            const angle = (i * 30 - 90) * (Math.PI / 180);
+            const x = centerX + radius * Math.cos(angle);
+            const y = centerY + radius * Math.sin(angle);
+
+            notePositions.push({ x, y, note });
+
+            const group = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+            group.setAttribute('class', 'note-group');
+
+            const isTonal = (note === targetTonalCenter);
+            const inProg = uniqueProgression.includes(note);
+
+            if (isTonal) group.classList.add('is-tonal-center');
+            if (inProg) group.classList.add('in-progression');
+
+            const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            circle.setAttribute('class', 'note-circle');
+            circle.setAttribute('cx', x);
+            circle.setAttribute('cy', y);
+            circle.setAttribute('r', '22');
+
+            const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            text.setAttribute('class', 'note-text');
+            text.setAttribute('x', x);
+            text.setAttribute('y', y);
+            text.textContent = note;
+
+            group.appendChild(circle);
+            group.appendChild(text);
+            notesGroup.appendChild(group);
+        });
+
+        // Draw connections for the progression
+        if (uniqueProgression.length > 1) {
+            let pathData = '';
+            uniqueProgression.forEach((note, i) => {
+                const pos = notePositions.find(p => p.note === note);
+                if (pos) {
+                    pathData += (i === 0 ? 'M' : 'L') + ` ${pos.x},${pos.y}`;
+                }
+            });
+
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            path.setAttribute('class', 'progression-line');
+            path.setAttribute('d', pathData);
+            connectionsGroup.appendChild(path);
+        }
+    };
+
     const displayResults = (data) => {
         // Track info
         trackTitle.textContent = data.track.title || 'Unknown Track';
@@ -119,6 +201,9 @@ document.addEventListener('DOMContentLoaded', () => {
             card.appendChild(valueEl);
             scalesGrid.appendChild(card);
         }
+
+        // Visualize Circle of Fifths
+        drawCircleOfFifths(data.tonal_center, uniqueSequence);
 
         // Show results
         resultsContainer.classList.remove('hidden');
