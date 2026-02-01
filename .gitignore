@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+tonalcenter/
+.env
+
+# Downloads and temp files
+downloads/
+*.mp3
+*.wav
+
+# System
+.DS_Store

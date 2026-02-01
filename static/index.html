@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TonalCenter AI | Professional Audio Analysis</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body class="dark-theme">
+    <div class="background-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <div class="container">
+        <header>
+            <div class="logo">
+                <span class="icon">∞</span>
+                <h1>Tonal<span>Center</span></h1>
+            </div>
+            <p class="subtitle">AI-Powered Harmonic Intelligence for Musicians</p>
+        </header>
+
+        <main>
+            <section class="input-section glass">
+                <div class="search-container">
+                    <input type="text" id="song-input" placeholder="Enter song name or Spotify track URL..." autocomplete="off">
+                    <button id="analyze-btn">Analyze</button>
+                </div>
+                
+                <div class="controls">
+                    <label for="instrument-select">Transposition:</label>
+                    <div class="instrument-grid" id="instrument-grid">
+                        <button class="instrument-btn active" data-value="concert">Concert Pitch</button>
+                        <button class="instrument-btn" data-value="Bb">Tenor Sax (Bb)</button>
+                        <button class="instrument-btn" data-value="Eb">Alto Sax (Eb)</button>
+                        <button class="instrument-btn" data-value="F">French Horn (F)</button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="results-container" class="results-container hidden">
+                <div class="track-header glass fade-in">
+                    <h2 id="track-title">Song Title</h2>
+                    <p id="track-artist">Artist Name</p>
+                </div>
+
+                <div class="grid-stats">
+                    <div class="stat-card glass fade-in delay-1">
+                        <h3>Detected Key</h3>
+                        <div class="stat-value" id="tonal-center-value">A MAJOR</div>
+                    </div>
+                    <div class="stat-card glass fade-in delay-2">
+                        <h3>Chord Sequence</h3>
+                        <div class="chord-sequence" id="chord-sequence-value">
+                            <!-- Chords will go here -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="scales-section glass fade-in delay-3">
+                    <h3>Suggested Scales for your Instrument</h3>
+                    <div class="scales-grid" id="scales-grid">
+                        <!-- Scale cards will go here -->
+                    </div>
+                </div>
+            </section>
+
+            <div id="loading" class="loading-overlay hidden">
+                <div class="loader"></div>
+                <p>Analyzing audio harmonics...</p>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2026 TonalCenter AI. Precision Harmonic Analysis.</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
